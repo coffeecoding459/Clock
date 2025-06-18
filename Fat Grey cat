@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <title>Cat Clock</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      background: #f0f0f0;
+      padding: 0;
       overflow: hidden;
+      height: 100%;
+      background: #f0f0f0;
       font-family: Arial, sans-serif;
     }
 
@@ -23,81 +25,81 @@
 
     #cat {
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 50px;
       background: gray;
       border-radius: 50% 50% 40% 40%;
+      box-shadow: inset 0 0 8px #00000033;
       z-index: 1;
-      box-shadow: inset 0 0 5px #00000033;
+      transform: rotate(0deg);
     }
 
-    /* Optional: Add little ears for fun */
+    /* Optional cat ears */
     #cat::before,
     #cat::after {
       content: "";
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
       background: gray;
-      top: 0;
+      top: -5px;
       border-radius: 50%;
     }
 
     #cat::before {
       left: 10px;
-      transform: rotate(-30deg);
+      transform: rotate(-25deg);
     }
 
     #cat::after {
       right: 10px;
-      transform: rotate(30deg);
+      transform: rotate(25deg);
     }
   </style>
 </head>
 <body>
-  <div id="clock">Loading...</div>
-  <div id="cat"></div>
 
-  <script>
-    // Set up time display (ET)
-    function updateTime() {
-      const clock = document.getElementById("clock");
-      const now = new Date();
+<div id="clock">Loading...</div>
+<div id="cat"></div>
 
-      // Convert to ET (Eastern Time)
-      const options = {
-        timeZone: "America/New_York",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
+<script>
+  const clock = document.getElementById("clock");
+  const cat = document.getElementById("cat");
+  let angle = 0;
+  const radius = 150;
 
-      const timeString = new Intl.DateTimeFormat("en-US", options).format(now);
-      clock.textContent = timeString;
-    }
+  function updateTime() {
+    const now = new Date();
+    const options = {
+      timeZone: "America/New_York",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    };
+    const timeString = new Intl.DateTimeFormat("en-US", options).format(now);
+    clock.textContent = timeString;
+  }
 
-    setInterval(updateTime, 1000);
-    updateTime(); // Initial call
+  setInterval(updateTime, 1000);
+  updateTime();
 
-    // Animate the cat
-    const cat = document.getElementById("cat");
-    let angle = 0;
-    const radius = 150;
+  function animateCat() {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
-    function animateCat() {
-      const x = centerX + radius * Math.cos(angle) - 50; // minus half cat width
-      const y = centerY + radius * Math.sin(angle) - 50; // minus half cat height
-      cat.style.left = `${x}px`;
-      cat.style.top = `${y}px`;
+    const x = centerX + radius * Math.cos(angle) - 40; // 40 = half of cat width
+    const y = centerY + radius * Math.sin(angle) - 25; // 25 = half of cat height
 
-      angle += 0.02; // adjust speed here
-      requestAnimationFrame(animateCat);
-    }
+    cat.style.left = `${x}px`;
+    cat.style.top = `${y}px`;
 
-    animateCat();
-  </script>
+    angle += 0.02;
+    requestAnimationFrame(animateCat);
+  }
+
+  animateCat();
+</script>
+
 </body>
 </html>
